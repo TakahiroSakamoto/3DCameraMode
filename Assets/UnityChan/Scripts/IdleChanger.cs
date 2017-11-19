@@ -19,7 +19,7 @@ public class IdleChanger : MonoBehaviour
 	private AnimatorStateInfo previousState;	// ひとつ前のステート状態を保存する参照
 	public bool _random = false;				// ランダム判定スタートスイッチ
 	public float _threshold = 0.5f;				// ランダム判定の閾値
-	public float _interval = 2f;				// ランダム判定のインターバル
+	public float _interval = 4f;				// ランダム判定のインターバル
 	//private float _seed = 0.0f;					// ランダム判定用シード
 	
 
@@ -38,48 +38,51 @@ public class IdleChanger : MonoBehaviour
 	// Update is called once per frame
 	void  Update ()
 	{
-		// ↑キー/スペースが押されたら、ステートを次に送る処理
-		if (Input.GetKeyDown ("up") || Input.GetButton ("Jump")) {
-			// ブーリアンNextをtrueにする
-			anim.SetBool ("Next", true);
-		}
+
+		Invoke("AnimRandom", 2.5f);
+
+		// // ↑キー/スペースが押されたら、ステートを次に送る処理
+		// if (Input.GetKeyDown ("up") || Input.GetButton ("Jump")) {
+		// 	// ブーリアンNextをtrueにする
+		// 	anim.SetBool ("Next", true);
+		// }
 		
-		// ↓キーが押されたら、ステートを前に戻す処理
-				if (Input.GetKeyDown ("down")) {
-			// ブーリアンBackをtrueにする
-			anim.SetBool ("Back", true);
-		}
+		// // ↓キーが押されたら、ステートを前に戻す処理
+		// 		if (Input.GetKeyDown ("down")) {
+		// 	// ブーリアンBackをtrueにする
+		// 	anim.SetBool ("Back", true);
+		// }
 		
-		// "Next"フラグがtrueの時の処理
-		if (anim.GetBool ("Next")) {
-			// 現在のステートをチェックし、ステート名が違っていたらブーリアンをfalseに戻す
-			currentState = anim.GetCurrentAnimatorStateInfo (0);
-			if (previousState.nameHash != currentState.nameHash) {
-				anim.SetBool ("Next", false);
-				previousState = currentState;				
-			}
-		}
+		// // "Next"フラグがtrueの時の処理
+		// if (anim.GetBool ("Next")) {
+		// 	// 現在のステートをチェックし、ステート名が違っていたらブーリアンをfalseに戻す
+		// 	currentState = anim.GetCurrentAnimatorStateInfo (0);
+		// 	if (previousState.nameHash != currentState.nameHash) {
+		// 		anim.SetBool ("Next", false);
+		// 		previousState = currentState;				
+		// 	}
+		// }
 		
-		// "Back"フラグがtrueの時の処理
-		if (anim.GetBool ("Back")) {
-			// 現在のステートをチェックし、ステート名が違っていたらブーリアンをfalseに戻す
-			currentState = anim.GetCurrentAnimatorStateInfo (0);
-			if (previousState.nameHash != currentState.nameHash) {
-				anim.SetBool ("Back", false);
-				previousState = currentState;
-			}
-		}
+		// // "Back"フラグがtrueの時の処理
+		// if (anim.GetBool ("Back")) {
+		// 	// 現在のステートをチェックし、ステート名が違っていたらブーリアンをfalseに戻す
+		// 	currentState = anim.GetCurrentAnimatorStateInfo (0);
+		// 	if (previousState.nameHash != currentState.nameHash) {
+		// 		anim.SetBool ("Back", false);
+		// 		previousState = currentState;
+		// 	}
+		// }
 	}
 
 
-	void OnGUI()
-	{
-				GUI.Box(new Rect(Screen.width - 110 , 10 ,100 ,90), "Change Motion");
-				if(GUI.Button(new Rect(Screen.width - 100 , 40 ,80, 20), "Next"))
-					anim.SetBool ("Next", true);
-				if(GUI.Button(new Rect(Screen.width - 100 , 70 ,80, 20), "Back"))
-					anim.SetBool ("Back", true);
-	}
+	// void OnGUI()
+	// {
+	// 			GUI.Box(new Rect(Screen.width - 110 , 10 ,100 ,90), "Change Motion");
+	// 			if(GUI.Button(new Rect(Screen.width - 100 , 40 ,80, 20), "Next"))
+	// 				anim.SetBool ("Next", true);
+	// 			if(GUI.Button(new Rect(Screen.width - 100 , 70 ,80, 20), "Back"))
+	// 				anim.SetBool ("Back", true);
+	// }
 
 
 	// ランダム判定用関数
@@ -100,7 +103,9 @@ public class IdleChanger : MonoBehaviour
 			// 次の判定までインターバルを置く
 			yield return new WaitForSeconds (_interval);
 		}
-
 	}
 
+	void AnimRandom() {
+		anim.SetBool("Next", true);
+	}
 }
