@@ -15,6 +15,8 @@ public class CameraManager : MonoBehaviour {
 	[SerializeField] GameObject center;
 	[SerializeField] List<GameObject> cameras = new List<GameObject>();
 	[SerializeField] List<GameObject> pointCameras = new List<GameObject>();
+
+	[SerializeField] List<GameObject> pointEffect = new List<GameObject>();
 	CAMERA_MODE cameraMode;
 	
 	private Vector3 lastMousePosition;
@@ -23,8 +25,16 @@ public class CameraManager : MonoBehaviour {
 	float time;
 
 	void Awake() {
-		foreach(var obj in cameras) {
-			obj.SetActive(false);
+		// foreach(var obj in cameras) {
+		// 	obj.SetActive(false);
+		// }
+		// foreach(var obj in pointEffect) {
+		// 	obj.SetActive(false);
+		// }
+
+		for(int i = 0; i > cameras.Count; i++) {
+			cameras[i].SetActive(false);
+			pointEffect[i].SetActive(false);
 		}
 	}
 
@@ -38,8 +48,10 @@ public class CameraManager : MonoBehaviour {
 
 		if(Input.GetKeyDown("w")) {
 			cameraMode = CAMERA_MODE.LOCKUP;
+			Time.timeScale = 1;
 		} else if(Input.GetKeyDown("q")) {
 			cameraMode = CAMERA_MODE.FIXEDPOINT;
+			Time.timeScale = 1;
 		} else if(Input.GetKeyDown("e")){
 			cameraMode = CAMERA_MODE.POSE;
 		}
@@ -57,26 +69,64 @@ public class CameraManager : MonoBehaviour {
 		// 定点カメラ移動、揺れる
 		// エフェクト降らす、
 		cameras[1].SetActive(true);
-		// cameras[1].transform.DOLocalPath (new Vector3[]{ new Vector3 (0.4f, 1.6f, 1.5f), new Vector3(2f, 2f), new Vector3 (1f, 1f) }, 3f, PathType.CatmullRom);
-		// cameras[1].transform.rotation = Quaternion.Euler(22,197,2);
+		cameras[2].SetActive(false);
+		cameras[0].SetActive(false);
+		
 
+		// for(int i = 0; i > cameras.Count; i++) {
+		// 	if(i == 0 || i == 2) {
+		// 		Debug.Log("切り替え1ON");
+		// 		cameras[i].SetActive(false);
+		// 	} else if (i == 1) {
+		// 		Debug.Log("切り替え1ONONONON");
+		// 		cameras[i].SetActive(true);
+		// 	}
+		// }
 		
 		time += Time.deltaTime;
 
 		if(time > 4f) {
 			// point2に移動
-			
-		} else if(time > 8f) {
+			ChangeTransform(1);
+			pointEffect[1].SetActive(true);
+			pointEffect[0].SetActive(false);
+			pointEffect[2].SetActive(false);
+		} 
+		if(time > 8f) {
 			// point3に移動
-			
-		}  else if (time > 12f) {
+			ChangeTransform(2);
+			pointEffect[2].SetActive(true);
+			pointEffect[0].SetActive(false);
+			pointEffect[1].SetActive(false);
+		} 
+		if (time > 12f) {
 			// point1に移動
+			ChangeTransform(0);
+			pointEffect[0].SetActive(true);
+			pointEffect[1].SetActive(false);
+			pointEffect[2].SetActive(false);
 			time = 0f;
 		}
+		
 	}
 
 	void UpdateForLockUp() {
+		// for(int i = 0; i > cameras.Count; i++) {
+		// 	if(i == 0 || i == 1) {
+		// 		Debug.Log("切り替え2ON");
+		// 		cameras[i].SetActive(false);
+		// 	} else if (i == 2) {
+		// 		cameras[i].SetActive(true);
+		// 	}
+		// }
+
 		cameras[2].SetActive(true);
+		cameras[0].SetActive(false);
+		cameras[1].SetActive(false);
+		pointEffect[0].SetActive(false);
+		pointEffect[1].SetActive(false);
+		pointEffect[2].SetActive(false);
+		
 		// 回転カメラ
 		if (Input.GetMouseButtonDown(0))
         {
@@ -97,7 +147,38 @@ public class CameraManager : MonoBehaviour {
 
 	void UpdateForPose() {
 		// スローモーション
+
+		// for(int i = 0; i > cameras.Count; i++) {
+		// 	if(i == 1 || i == 2) {
+		// 		Debug.Log("切り替え3ON");
+		// 		cameras[i].SetActive(false);
+		// 	} else if (i == 0) {
+		// 		Debug.Log("切り替え3ONONONO");
+		// 		cameras[i].SetActive(true);
+		// 	}
+
 		cameras[0].SetActive(true);
+		cameras[1].SetActive(false);
+		cameras[2].SetActive(false);
+		pointEffect[0].SetActive(false);
+		pointEffect[1].SetActive(false);
+		pointEffect[2].SetActive(false);
+		
+		
 		Time.timeScale = 0.2f;
+	}
+
+	void ChangeTransform(int num) {
+		cameras[1].transform.position = pointCameras[num].transform.position;
+		cameras[1].transform.rotation = pointCameras[num].transform.rotation;
+		
+
+		for(int i = 0; i > pointEffect.Count; i++) {
+			if(i == num) {
+				pointEffect[i].SetActive(true);
+			} else {
+				pointEffect[i].SetActive(false);
+			}
+		}
 	}
 }
