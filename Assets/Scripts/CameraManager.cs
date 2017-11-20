@@ -24,14 +24,9 @@ public class CameraManager : MonoBehaviour {
 
 	float time;
 
-	void Awake() {
-		// foreach(var obj in cameras) {
-		// 	obj.SetActive(false);
-		// }
-		// foreach(var obj in pointEffect) {
-		// 	obj.SetActive(false);
-		// }
+	bool isChack;
 
+	void Awake() {
 		for(int i = 0; i > cameras.Count; i++) {
 			cameras[i].SetActive(false);
 			pointEffect[i].SetActive(false);
@@ -46,16 +41,21 @@ public class CameraManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+		// カメラの切り替え
 		if(Input.GetKeyDown("w")) {
 			cameraMode = CAMERA_MODE.LOCKUP;
 			Time.timeScale = 1;
+			isChack = true;
 		} else if(Input.GetKeyDown("q")) {
 			cameraMode = CAMERA_MODE.FIXEDPOINT;
 			Time.timeScale = 1;
+			isChack = true;
 		} else if(Input.GetKeyDown("e")){
 			cameraMode = CAMERA_MODE.POSE;
+			isChack = true;
 		}
 
+		// カメラのモードごとの処理
 		if(cameraMode == CAMERA_MODE.FIXEDPOINT) {
 			UpdateForFixedPoint();
 		} else if(cameraMode == CAMERA_MODE.LOCKUP) {
@@ -66,8 +66,8 @@ public class CameraManager : MonoBehaviour {
 	}
 
 	void UpdateForFixedPoint() {
-		// 定点カメラ移動、揺れる
-		// エフェクト降らす、
+		// 定点カメラ
+		// エフェクト
 		cameras[1].SetActive(true);
 		cameras[2].SetActive(false);
 		cameras[0].SetActive(false);
@@ -172,13 +172,18 @@ public class CameraManager : MonoBehaviour {
 		cameras[1].transform.position = pointCameras[num].transform.position;
 		cameras[1].transform.rotation = pointCameras[num].transform.rotation;
 		
-
-		for(int i = 0; i > pointEffect.Count; i++) {
-			if(i == num) {
-				pointEffect[i].SetActive(true);
-			} else {
-				pointEffect[i].SetActive(false);
-			}
-		}
+		// if(isChack) {
+		// 	Debug.Log("OKOKOKOKKOKO");
+		// 	for(int i = 0; i > pointEffect.Count; i++) {
+		// 		if(i == num) {
+		// 			Debug.Log("IUOIUIYOII");
+		// 			pointEffect[i].SetActive(true);
+		// 		} else {
+		// 			pointEffect[i].SetActive(false);
+		// 		}
+		// 	}
+		// 	isChack = false;
+		// }
+		
 	}
 }
