@@ -15,15 +15,14 @@ public class CameraManager : MonoBehaviour {
 	[SerializeField] GameObject center;
 	[SerializeField] List<GameObject> cameras = new List<GameObject>();
 	[SerializeField] List<GameObject> pointCameras = new List<GameObject>();
-
 	[SerializeField] List<GameObject> pointEffect = new List<GameObject>();
+
 	CAMERA_MODE cameraMode;
 	
 	private Vector3 lastMousePosition;
     private Vector3 newAngle = new Vector3(0, 0, 0);
 
 	float time;
-
 	bool isChack;
 
 	void Awake() {
@@ -72,34 +71,23 @@ public class CameraManager : MonoBehaviour {
 		cameras[2].SetActive(false);
 		cameras[0].SetActive(false);
 		
-
-		// for(int i = 0; i > cameras.Count; i++) {
-		// 	if(i == 0 || i == 2) {
-		// 		Debug.Log("切り替え1ON");
-		// 		cameras[i].SetActive(false);
-		// 	} else if (i == 1) {
-		// 		Debug.Log("切り替え1ONONONON");
-		// 		cameras[i].SetActive(true);
-		// 	}
-		// }
-		
 		time += Time.deltaTime;
 
-		if(time > 4f) {
+		if(time > 3f) {
 			// point2に移動
 			ChangeTransform(1);
 			pointEffect[1].SetActive(true);
 			pointEffect[0].SetActive(false);
 			pointEffect[2].SetActive(false);
 		} 
-		if(time > 8f) {
+		if(time > 6f) {
 			// point3に移動
 			ChangeTransform(2);
 			pointEffect[2].SetActive(true);
 			pointEffect[0].SetActive(false);
 			pointEffect[1].SetActive(false);
 		} 
-		if (time > 12f) {
+		if (time > 10f) {
 			// point1に移動
 			ChangeTransform(0);
 			pointEffect[0].SetActive(true);
@@ -107,19 +95,9 @@ public class CameraManager : MonoBehaviour {
 			pointEffect[2].SetActive(false);
 			time = 0f;
 		}
-		
 	}
 
 	void UpdateForLockUp() {
-		// for(int i = 0; i > cameras.Count; i++) {
-		// 	if(i == 0 || i == 1) {
-		// 		Debug.Log("切り替え2ON");
-		// 		cameras[i].SetActive(false);
-		// 	} else if (i == 2) {
-		// 		cameras[i].SetActive(true);
-		// 	}
-		// }
-
 		cameras[2].SetActive(true);
 		cameras[0].SetActive(false);
 		cameras[1].SetActive(false);
@@ -148,22 +126,12 @@ public class CameraManager : MonoBehaviour {
 	void UpdateForPose() {
 		// スローモーション
 
-		// for(int i = 0; i > cameras.Count; i++) {
-		// 	if(i == 1 || i == 2) {
-		// 		Debug.Log("切り替え3ON");
-		// 		cameras[i].SetActive(false);
-		// 	} else if (i == 0) {
-		// 		Debug.Log("切り替え3ONONONO");
-		// 		cameras[i].SetActive(true);
-		// 	}
-
 		cameras[0].SetActive(true);
 		cameras[1].SetActive(false);
 		cameras[2].SetActive(false);
 		pointEffect[0].SetActive(false);
 		pointEffect[1].SetActive(false);
-		pointEffect[2].SetActive(false);
-		
+		pointEffect[2].SetActive(false);		
 		
 		Time.timeScale = 0.2f;
 	}
